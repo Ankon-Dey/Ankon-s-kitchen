@@ -1,0 +1,46 @@
+<%- include('partials/navbar') %>
+
+<div class="container mt-5">
+  <h2 class="mb-4">Edit Your Profile</h2>
+
+  <form action="/profile/edit" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="bio" class="form-label">Bio</label>
+      <textarea class="form-control" name="bio" id="bio" rows="3"><%= user.bio || '' %></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="profileImage" class="form-label">Profile Image</label>
+      <input class="form-control" type="file" name="profileImage" id="profileImage">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Profile</button>
+  </form>
+</div>
+
+<%- include('partials/footer') %>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Dark mode toggle
+    const darkToggle = document.getElementById('darkToggle');
+    darkToggle.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      darkToggle.classList.toggle('btn-light');
+      darkToggle.classList.toggle('btn-dark');
+    });
+  });
+    // Initialize AOS
+    AOS.init({
+      once: true,
+      duration: 800
+    });
+    // Initialize Lucide icons
+    lucide.createIcons();
+</script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({
+    once: true,
+    duration: 800
+  });
+  

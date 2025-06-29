@@ -1,0 +1,15 @@
+<% if (infoErrorsObj && infoErrorsObj.length > 0) { %>
+  <div class="error">
+    <% infoErrorsObj.forEach(function(msg) { %>
+      <p><%= msg %></p>
+    <% }) %>
+  </div>
+<% } %>
+
+<% if (infoSubmitObj && infoSubmitObj.length > 0) { %>
+  <div class="success">
+    <% infoSubmitObj.forEach(function(msg) { %>
+      <p><%= msg %></p>
+    <% }) %>
+  </div>
+<% } %>

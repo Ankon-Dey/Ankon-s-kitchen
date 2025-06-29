@@ -1,0 +1,181 @@
+<%- include('partials/navbar') %>
+
+<section class="profile-header py-5 text-white text-center" style="background: linear-gradient(135deg, #f093fb 0%, #e6b980 50%, #f5576c 100%); position: relative; overflow: hidden;">
+  <div class="container position-relative">
+    <img src="https://avatars.dicebear.com/api/initials/<%= user.name || 'User' %>.svg" class="rounded-circle border border-white border-4 mb-3 profile-img animate__animated animate__pulse animate__infinite" width="120" alt="User Avatar">
+     <p class="mb-3"><i class="bi bi-info-circle"></i> <%= user.bio || 'No bio added yet.' %></p>s
+    <h2 class="fw-bold"><%= user.name %></h2>
+    <p class="text-light"><i class="bi bi-envelope-fill me-2"></i><%= user.email %></p>
+    <a href="/logout" class="btn btn-light btn-sm mt-2"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    <a href="/profile/edit" class="btn btn-outline-light btn-sm mt-2"><i class="bi bi-pencil-square"></i> Edit Profile</a>
+  </div>
+</section>
+
+<section class="container my-5">
+  <h3 class="text-center mb-4 fw-bold text-gradient">My Shared Recipes</h3>
+  <% if (recipes && recipes.length > 0) { %>
+    <div class="row g-4">
+      <% recipes.forEach(recipe => { %>
+        <div class="col-md-4" data-aos="zoom-in">
+          <div class="card h-100 shadow border-0 recipe-card">
+            <img src="/uploads/<%= recipe.image %>" class="card-img-top" alt="<%= recipe.name %>">
+            <div class="card-body">
+              <h5 class="card-title text-primary"><%= recipe.name %></h5>
+              <p class="card-text small"><%= recipe.description.substring(0, 100) %>...</p>
+            </div>
+            <div class="card-footer bg-white border-0 d-flex justify-content-between align-items-center">
+              <a href="/recipe/<%= recipe._id %>" class="btn btn-outline-primary btn-sm"><i class="bi bi-eye"></i> View</a>
+              <a href="/download/<%= recipe._id %>" class="btn btn-outline-success btn-sm"><i class="bi bi-download"></i> Download</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p class="text-muted text-center mt-5">You haven't shared any recipes yet.</p>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>
+
+
+<!-- Add Animate.css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<!-- Add Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<!-- Add Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Add custom styles -->
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+  .card {
+    border-radius: 1rem;
+  }
+  .card-body {
+    background-color: #ffffff;
+  }
+  .card img {
+    border-radius: 0.5rem;
+  }
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    .card-text {
+        font-size: 0.9rem;
+        color: #6c757d;
+    }
+    .btn {
+        font-size: 0.9rem;
+    }
+    .btn-outline-success {
+        border-color: #28a745;
+        color: #28a745;
+    }
+    .btn-outline-success:hover {
+        background-color: #28a745;
+        color: white;
+    }
+    .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+    .btn-outline-light {
+        border-color: #ffffff;
+        color: #ffffff;
+    }   
+    .btn-outline-light:hover {
+        background-color: #ffffff;
+        color: #343a40;
+    }
+    .rounded-circle {
+        border: 3px solid #ffffff;
+    }
+    .bg-gradient {
+        background: linear-gradient(135deg, #36D1DC, #5B86E5);
+    }
+    .text-white {
+        color: #ffffff;
+    }
+    .text-muted {
+        color: #6c757d;
+    }
+    .container {
+        max-width: 1200px;
+    }
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: none;
+    }
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: none;
+    }
+    .animate__animated {
+        animation-duration: 1s;
+    }
+    .animate__fadeInUp {
+        animation-name: fadeInUp;
+    }
+    .animate__fadeInUp {
+        animation-duration: 1s;
+        animation-fill-mode: both;
+    }
+    .animate__fadeInUp {
+        animation-name: fadeInUp;
+    }   
+    @media (max-width: 768px) {
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+        .card-title {
+            font-size: 1.1rem;
+        }
+        .card-text {
+            font-size: 0.85rem;
+        }
+    }
+</style>
+<!-- Add Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Initialize Animate.css animations
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1200,
+    once: true,
+    easing: 'ease-in-out',
+  });
+    $(window).on('load', function() {
+        AOS.refresh();
+    });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add AOS attributes to elements
+    const elements = document.querySelectorAll('[data-aos]');
+    elements.forEach(el => {
+      el.setAttribute('data-aos', 'fade-up');
+      el.setAttribute('data-aos-duration', '1000');
+    });
+  });
+    </script>
+<script>
+

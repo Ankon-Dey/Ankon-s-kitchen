@@ -1,0 +1,20 @@
+<nav>
+  <a href="/">Home</a>
+  <% if (typeof user !== 'undefined') { %>
+    <a href="/logout">Logout</a>
+  <% } else { %>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+  <% } %>
+<% if (user) { %>
+  <li class="nav-item">
+    <a class="nav-link" href="/profile">
+      <i class="bi bi-person-circle"></i> <%= user.name %>
+    </a>
+  </li>
+<% } else { %>
+  <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+<% } %>
+
+</nav>
+

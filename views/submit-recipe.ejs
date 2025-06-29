@@ -1,0 +1,374 @@
+<div class="px-4 py-5 my-5 text-center bg-gradient-primary text-white rounded-3 shadow" style="background: linear-gradient(to right, #D4AF37 0%, #EFC82F 50%, #F9E076 100%);">
+  <h1 class="display-4 fw-bold">Share Your Culinary Masterpiece</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">Join our community of food enthusiasts! Your recipe could be featured in our weekly newsletter reaching over 50,000 food lovers worldwide.</p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <button type="button" class="btn btn-outline-light btn-lg px-4 gap-3" id="inspirationBtn">Need Inspiration?</button>
+      <button type="button" class="btn btn-outline-light btn-lg px-4" id="trendingBtn">See Trending Recipes</button>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center mt-4">
+
+  <% if(infoSubmitObj != '') { %>
+    <div class="col-10 alert alert-success alert-dismissible fade show" role="alert">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-check-circle-fill me-2" style="font-size: 1.5rem;"></i>
+        <div>
+          <h5 class="alert-heading mb-1">Recipe Submitted Successfully!</h5>
+          <p class="mb-0"><%= infoSubmitObj %></p>
+        </div>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
+
+  <% if(infoErrorsObj != '') { %>
+    <div class="col-10 alert alert-danger alert-dismissible fade show" role="alert">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-exclamation-triangle-fill me-2" style="font-size: 1.5rem;"></i>
+        <div>
+          <h5 class="alert-heading mb-1">Oops! There was an issue</h5>
+          <p class="mb-0"><%= infoErrorsObj[0].message %></p>
+        </div>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
+
+  <div class="col-10">
+    <div class="card shadow-sm border-0 overflow-hidden">
+      <div class="card-header bg-white">
+        <ul class="nav nav-tabs card-header-tabs" id="formTabs">
+          <li class="nav-item">
+            <a class="btn btn-primary" id="basic-tab" data-bs-toggle="tab" href="#basic"><u>Basic Info</u></a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary" id="ingredients-tab" data-bs-toggle="tab" href="#ingredients"><u>Ingredients</u></a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary" id="media-tab" data-bs-toggle="tab" href="#media"><u>Media</u></a>
+          </li>
+        </ul>
+      </div>
+      
+      <form action="/submit-recipe" enctype="multipart/form-data" method="POST" id="recipeForm">
+        <div class="card-body">
+          <div class="tab-content" id="formTabsContent">
+            
+            <!-- Basic Info Tab -->
+            <div class="tab-pane fade show active" id="basic" role="tabpanel">
+              <div class="mb-4">
+                <label for="email" class="form-label">Your Email <span class="text-danger">*</span></label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="example@mail.com" required>
+                <small class="text-muted">We'll never share your email with anyone else</small>
+              </div>
+              
+              <div class="mb-4">
+                <label for="name" class="form-label">Recipe Name <span class="text-danger">*</span></label>
+                <input type="text" name="name" id="name" class="form-control" placeholder="e.g. Creamy Garlic Pasta" required>
+                <div class="form-text">Be creative! What makes your recipe special?</div>
+              </div>
+              
+              <div class="mb-4">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="description" id="description" class="form-control" cols="30" rows="4" placeholder="Tell us about your recipe... What's the story behind it? Any special tips?"></textarea>
+                <div class="d-flex justify-content-between mt-1">
+                  <small class="text-muted">Minimum 50 characters</small>
+                  <small><span id="charCount">0</span>/500</small>
+                </div>
+              </div>
+              
+              <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-primary next-tab" data-target="#ingredients-tab">Next: Ingredients <i class="bi bi-arrow-right"></i></button>
+              </div>
+            </div>
+            
+            <!-- Ingredients Tab -->
+            <div class="tab-pane fade" id="ingredients" role="tabpanel">
+              <div class="mb-3">
+                <label class="form-label">Ingredients <span class="text-danger">*</span></label>
+                <small class="d-block text-muted mb-2">Add each ingredient one by one. Include quantities (e.g., 2 cups flour)</small>
+                
+                <div class="ingredientList" id="ingredientList">
+                  <div class="ingredient-item input-group mb-2">
+                    <input type="text" name="ingredients[]" class="form-control" placeholder="e.g. 1 cup chopped onions" required>
+                    <button type="button" class="btn btn-outline-danger remove-ingredient"><i class="bi bi-trash"></i></button>
+                  </div>
+                </div>
+                
+                <button type="button" class="btn btn-outline-success mt-2" id="addIngredientsBtn">
+                  <i class="bi bi-plus-circle"></i> Add Another Ingredient
+                </button>
+                
+                <div class="form-check mt-3">
+                  <input class="form-check-input" type="checkbox" id="commonAllergens">
+                  <label class="form-check-label" for="commonAllergens">
+                    This recipe contains common allergens (nuts, dairy, gluten, etc.)
+                  </label>
+                </div>
+              </div>
+              
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-secondary prev-tab" data-target="#basic-tab">
+                  <i class="bi bi-arrow-left"></i> Back
+                </button>
+                <button type="button" class="btn btn-primary next-tab" data-target="#media-tab">
+                  Next: Media <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Media Tab -->
+            <div class="tab-pane fade" id="media" role="tabpanel">
+              <div class="mb-4">
+                <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
+                <select class="form-select form-control" name="category" aria-label="Category" required>
+                  <option value="" selected disabled>Select Category</option>
+                  <option value="Thai">Thai</option>
+                  <option value="American">American</option>
+                  <option value="Chinese">Chinese</option>
+                  <option value="Mexican">Mexican</option>
+                  <option value="Indian">Indian</option>
+                  <option value="Italian">Italian</option>
+                  <option value="Spanish">Spanish</option>
+                  <option value="Desserts">Desserts</option>
+                </select>
+              </div>
+              
+              <div class="mb-4">
+                <label for="image" class="form-label">Recipe Image <span class="text-danger">*</span></label>
+                <div class="border rounded p-3 text-center bg-light" id="imageUploadArea">
+                  <input type="file" class="d-none" name="image" id="image" accept="image/*" required>
+                  <img src="" alt="Preview" class="img-thumbnail mb-2 d-none" id="imagePreview" style="max-height: 200px;">
+                  <div id="uploadPrompt">
+                    <i class="bi bi-camera fs-1 text-muted"></i>
+                    <p class="mb-1">Click to upload or drag and drop</p>
+                    <small class="text-muted">JPG or PNG (Max 2MB)</small>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label for="video" class="form-label">Video (Optional)</label>
+                <input type="text" class="form-control" name="video" placeholder="YouTube/Vimeo URL">
+              </div>
+              
+              <div class="d-flex justify-content-between">
+                <button type="button" class="btn btn-outline-secondary prev-tab" data-target="#ingredients-tab">
+                  <i class="bi bi-arrow-left"></i> Back
+                </button>
+                <button type="submit" class="btn btn-success">
+                  <i class="bi bi-send-check"></i> Submit Recipe
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Recipe Inspiration Modal -->
+<div class="modal fade" id="inspirationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Recipe Inspiration</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card h-100 border-0 shadow-sm">
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top" alt="Healthy Bowl">
+              <div class="card-body">
+                <h6 class="card-title">Seasonal Special</h6>
+                <p class="card-text small">Share your best summer salad or winter comfort food recipe!</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100 border-0 shadow-sm">
+              <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" class="card-img-top" alt="Vegetarian">
+              <div class="card-body">
+                <h6 class="card-title">Vegetarian/Vegan</h6>
+                <p class="card-text small">Plant-based recipes are trending - share your favorite!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Trending Recipes Modal -->
+<div class="modal fade" id="trendingModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title">Trending Recipes Around the World</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="ratio ratio-16x9">
+          <iframe 
+            src="https://www.youtube.com/embed/0tvEa9NeuU4?autoplay=1&rel=0&showinfo=0" 
+            title="Trending Recipes"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  // Character counter for description
+  document.getElementById('description').addEventListener('input', function() {
+    document.getElementById('charCount').textContent = this.value.length;
+  });
+  
+  // Tab navigation
+  document.querySelectorAll('.next-tab, .prev-tab').forEach(button => {
+    button.addEventListener('click', function() {
+      const targetTab = this.getAttribute('data-target');
+      const tab = new bootstrap.Tab(document.querySelector(targetTab));
+      tab.show();
+    });
+  });
+  
+  // Dynamic ingredient fields
+  document.getElementById('addIngredientsBtn').addEventListener('click', function() {
+    const newIngredient = document.createElement('div');
+    newIngredient.className = 'ingredient-item input-group mb-2';
+    newIngredient.innerHTML = `
+      <input type="text" name="ingredients[]" class="form-control" placeholder="e.g. 2 cloves garlic, minced">
+      <button type="button" class="btn btn-outline-danger remove-ingredient"><i class="bi bi-trash"></i></button>
+    `;
+    document.getElementById('ingredientList').appendChild(newIngredient);
+  });
+  
+  // Remove ingredient
+  document.addEventListener('click', function(e) {
+    if(e.target.classList.contains('remove-ingredient') || e.target.closest('.remove-ingredient')) {
+      const item = e.target.closest('.ingredient-item');
+      if(document.querySelectorAll('.ingredient-item').length > 1) {
+        item.remove();
+      } else {
+        item.querySelector('input').value = '';
+      }
+    }
+  });
+  
+  // Image upload preview
+  const imageUpload = document.getElementById('image');
+  const imagePreview = document.getElementById('imagePreview');
+  const uploadPrompt = document.getElementById('uploadPrompt');
+  const uploadArea = document.getElementById('imageUploadArea');
+  
+  uploadArea.addEventListener('click', () => imageUpload.click());
+  
+  imageUpload.addEventListener('change', function() {
+    if(this.files && this.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        imagePreview.classList.remove('d-none');
+        uploadPrompt.classList.add('d-none');
+      }
+      reader.readAsDataURL(this.files[0]);
+    }
+  });
+  
+  // Drag and drop for image
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, preventDefaults, false);
+  });
+  
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  
+  ['dragenter', 'dragover'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, highlight, false);
+  });
+  
+  ['dragleave', 'drop'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, unhighlight, false);
+  });
+  
+  function highlight() {
+    uploadArea.classList.add('border-primary');
+  }
+  
+  function unhighlight() {
+    uploadArea.classList.remove('border-primary');
+  }
+  
+  uploadArea.addEventListener('drop', handleDrop, false);
+  
+  function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    imageUpload.files = files;
+    const event = new Event('change');
+    imageUpload.dispatchEvent(event);
+  }
+  
+  // Inspiration modal
+  document.getElementById('inspirationBtn').addEventListener('click', function() {
+    const modal = new bootstrap.Modal(document.getElementById('inspirationModal'));
+    modal.show();
+  });
+
+  // Trending recipes modal
+  document.getElementById('trendingBtn').addEventListener('click', function() {
+    const trendingModal = new bootstrap.Modal(document.getElementById('trendingModal'));
+    trendingModal.show();
+  });
+</script>
+
+<style>
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, #EFC82F 0%, #F7D967 50%, #FFEEA8 100%);
+  }
+  
+  .ingredient-item {
+    transition: all 0.3s ease;
+  }
+  
+  .ingredient-item:hover {
+    transform: translateX(5px);
+  }
+  
+  #imageUploadArea {
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  #imageUploadArea:hover {
+    border-color: #0d6efd !important;
+  }
+  
+  .nav-tabs .nav-link {
+    color: #495057;
+    font-weight: 500;
+  }
+  
+  .nav-tabs .nav-link.active {
+    color: #0d6efd;
+    border-bottom: 3px solid #0d6efd;
+  }
+  
+  .tab-pane {
+    padding: 1.5rem 0.5rem;
+  }
+</style>
